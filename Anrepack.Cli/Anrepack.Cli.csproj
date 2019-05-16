@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IronPython" Version="2.7.9" />
+    <PackageReference Include="IronPython.StdLib" Version="2.7.9" />
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Anrepack.JavaResolver\Anrepack.JavaResolver.csproj" />
+    <ProjectReference Include="..\Anrepack.AndroidResolver\Anrepack.AndroidResolver.csproj" />
+    <ProjectReference Include="..\Anrepack.AndroidSdkDownloader\Anrepack.AndroidSdkDownloader.csproj" />
+    <ProjectReference Include="..\Anrepack.AndroidCore\Anrepack.AndroidCore.csproj" />
+    <ProjectReference Include="..\Anrepack.ApktoolDownloader\Anrepack.ApktoolDownloader.csproj" />
+    <ProjectReference Include="..\Anrepack.AndroidDebugKeystoreGenerator\Anrepack.AndroidDebugKeystoreGenerator.csproj" />
+  </ItemGroup>
+</Project>
