@@ -15,9 +15,14 @@ namespace Anrepack.Cli
     public class Program
     {
 
-        public static Version AppVersion
+        private static AssemblyInformationalVersionAttribute InfoAttr
         {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+            get { return Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>(); }
+        }
+
+        public static string AppVersion
+        {
+            get { return InfoAttr.InformationalVersion; }
         }
 
         public static string AppName
