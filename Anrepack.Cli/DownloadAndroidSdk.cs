@@ -4,7 +4,10 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Anrepack.Cli
 {
 
-    [Command(SUBCOMMAND_NAME)]
+    [Command(
+        SUBCOMMAND_NAME,
+        Description = "Download Android SDK to default location."
+    )]
     public class DownloadAndroidSdk : IAnrepackCommand
     {
 

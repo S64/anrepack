@@ -5,7 +5,10 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Anrepack.Cli
 {
 
-    [Command(SUBCOMMAND_NAME)]
+    [Command(
+        SUBCOMMAND_NAME,
+        Description = "Generate \"debug.keystore\" to default location."
+    )]
     public class GenerateDebugKeystore : IAnrepackCommand
     {
         public const string SUBCOMMAND_NAME = "generate-debug-keystore";

@@ -4,6 +4,8 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace Anrepack.Cli
 {
+
+    [HelpOption]
     [Subcommand(
         typeof(Repack),
         typeof(DownloadAndroidSdk),
@@ -40,11 +42,7 @@ namespace Anrepack.Cli
 
         void OnExecute()
         {
-            Console.WriteLine("List of subcommands:");
-            Console.WriteLine($"\t{Repack.SUBCOMMAND_NAME}");
-            Console.WriteLine($"\t{DownloadAndroidSdk.SUBCOMMAND_NAME}");
-            Console.WriteLine($"\t{DownloadApktool.SUBCOMMAND_NAME}");
-            Console.WriteLine($"\t{GenerateDebugKeystore.SUBCOMMAND_NAME}");
+            Console.WriteLine("Usages can show with `--help` option.");
         }
 
     }
