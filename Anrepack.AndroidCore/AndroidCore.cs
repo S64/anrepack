@@ -12,12 +12,14 @@ namespace Anrepack
 
         private static DirectoryInfo Win32ProgramFiles()
         {
-            return new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86));
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+            return Directory.Exists(path) ? new DirectoryInfo(path) : null;
         }
 
         private static DirectoryInfo Win64ProgramFiles()
         {
-            return new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles));
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            return Directory.Exists(path) ? new DirectoryInfo(path) : null;
         }
 
         public static readonly char DSC = Path.DirectorySeparatorChar;
@@ -30,9 +32,23 @@ namespace Anrepack
 
         public readonly static string UserAndroidHomePath_WIN = $"{HomeDir.FullName}{DSC}AppData{DSC}Local{DSC}Android{DSC}sdk";
 
-        public readonly static string SystemAndroidHomePath_WIN32 = $"{Win32ProgramFiles().FullName}{DSC}Android{DSC}android-sdk";
+        public static string SystemAndroidHomePath_WIN32()
+        {
+            if (Win32ProgramFiles() != null)
+            {
+                return $"{Win32ProgramFiles().FullName}{DSC}Android{DSC}android-sdk";
+            }
+            return null;
+        }
 
-        public readonly static string SystemAndroidHomePath_WIN64 = $"{Win64ProgramFiles().FullName}{DSC}Android{DSC}android-sdk";
+        public static string SystemAndroidHomePath_WIN64()
+        {
+            if (Win64ProgramFiles() != null)
+            {
+                return $"{Win64ProgramFiles().FullName}{DSC}Android{DSC}android-sdk";
+            }
+            return null;
+        }
 
         public static readonly Uri ArchiveUriOsX
             = new Uri("https://dl.google.com/android/repository/sdk-tools-darwin-4333796.zip");
