@@ -80,6 +80,10 @@ jobs:
           working_directory: /tmp/app-published/windows-selfcontained
       - store_artifacts:
           path: /tmp/app-archived
+      - run:
+          name: Deploy to GitHub Releases
+          command: ghr -prerelease -draft -u S64 -r anrepack -c ${CIRCLE_SHA1} -n $(/tmp/app-published/osx-selfcontained/Anrepack.Cli version) $(/tmp/app-published/osx-selfcontained/Anrepack.Cli version) ./*
+          working_directory: /tmp/app-archived
 
 workflows:
   build-and-publish:
