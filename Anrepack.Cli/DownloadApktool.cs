@@ -5,7 +5,6 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Anrepack.Cli
 {
 
-    [HelpOption]
     [Command(
         SUBCOMMAND_NAME,
         Description = "Download Apktool to Anrepack's temporary location."
