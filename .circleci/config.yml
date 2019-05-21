@@ -7,12 +7,14 @@ executors:
 
 jobs:
   build-for-macos:
+    executor: dotnetcore
     steps:
       - checkout
       - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --output=/tmp/app-published
       - store_artifacts:
         path: /tmp/app-published
   build-for-macos:
+    executor: dotnetcore
     steps:
       - checkout
       - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --output=/tmp/app-published
