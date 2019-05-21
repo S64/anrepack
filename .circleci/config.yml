@@ -34,7 +34,7 @@ jobs:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-SNAPSHOT-${CIRCLE_SHA1} --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
