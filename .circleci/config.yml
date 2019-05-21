@@ -15,6 +15,15 @@ jobs:
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --self-contained=false --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
+  build-for-macos-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build osx executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --self-contained=true --output=/tmp/app-published
+      - store_artifacts:
+          path: /tmp/app-published
   build-for-windows:
     executor: dotnetcore
     steps:
@@ -24,9 +33,20 @@ jobs:
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --self-contained=false --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
+  build-for-windows-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build windows executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --self-contained=true --output=/tmp/app-published
+      - store_artifacts:
+          path: /tmp/app-published
 
 workflows:
   build-and-publish:
     jobs:
       - build-for-macos
       - build-for-windows
+      - build-for-macos-selfcontained
+      - build-for-windows-selfcontained
