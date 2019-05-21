@@ -14,6 +14,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
+      - run:
           name: Build osx executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/osx
       - persist_to_workspace:
@@ -24,6 +27,9 @@ jobs:
     executor: dotnetcore
     steps:
       - checkout
+      - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
       - run:
           name: Build osx executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/osx-selfcontained
@@ -36,6 +42,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
+      - run:
           name: Build windows executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
       - persist_to_workspace:
@@ -46,6 +55,9 @@ jobs:
     executor: dotnetcore
     steps:
       - checkout
+      - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
       - run:
           name: Build windows executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/windows-selfcontained
@@ -58,6 +70,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
+      - run:
           name: Build linux executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/linux
       - persist_to_workspace:
@@ -69,6 +84,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
+      - run:
           name: Build linux executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-selfcontained
       - persist_to_workspace:
@@ -79,6 +97,9 @@ jobs:
     executor: dotnetcore
     steps:
       - checkout
+      - run:
+          name: Add sentry file
+          command: echo $ANREPACK_SENTRY_DSN > ./Anrepack.Cli/Resources/SentryDsn.txt
       - run:
           name: Build linux-musl executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-musl-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-musl-selfcontained
