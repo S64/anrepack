@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Anrepack
@@ -36,9 +37,9 @@ namespace Anrepack
                 {
                     dirs = new string[] {
                         AndroidCore.UserAndroidHomePath_WIN,
-                        AndroidCore.SystemAndroidHomePath_WIN32,
-                        AndroidCore.SystemAndroidHomePath_WIN64
-                    };
+                        AndroidCore.SystemAndroidHomePath_WIN32(),
+                        AndroidCore.SystemAndroidHomePath_WIN64()
+                    }.Where(x => x != null).ToArray();
                 }
                 else
                 {
