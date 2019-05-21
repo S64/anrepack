@@ -60,6 +60,9 @@ jobs:
       - attach_workspace:
           at: /tmp/app-published
       - run:
+          name: "List"
+          command: ls -la /tmp/app-published
+      - run:
           name: Archive for osx
           command: zip /tmp/app-archived/osx.zip -r /tmp/app-published/osx
       - run:
@@ -71,9 +74,6 @@ jobs:
       - run:
           name: Archive for windows-selfcontained
           command: zip /tmp/app-archived/windows-selfcontained.zip -r /tmp/app-published/windows-selfcontained
-      - run:
-          name: "List"
-          command: ls -la /tmp/app-archived
       - store_artifacts:
           path: /tmp/app-archived
 
