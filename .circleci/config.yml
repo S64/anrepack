@@ -1,0 +1,26 @@
+version: 2.1
+
+executors:
+  dotnetcore:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+
+jobs:
+  build-for-macos:
+    steps:
+      - checkout
+      - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --output=/tmp/app-published
+      - store_artifacts:
+        path: /tmp/app-published
+  build-for-macos:
+    steps:
+      - checkout
+      - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --output=/tmp/app-published
+      - store_artifacts:
+        path: /tmp/app-published
+  
+workflows:
+  build-and-publish:
+    jobs:
+      - build-for-macos
+      - build-for-windows
