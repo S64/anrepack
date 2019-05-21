@@ -12,14 +12,14 @@ jobs:
       - checkout
       - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --output=/tmp/app-published
       - store_artifacts:
-        path: /tmp/app-published
+          path: /tmp/app-published
   build-for-windows:
     executor: dotnetcore
     steps:
       - checkout
       - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --output=/tmp/app-published
       - store_artifacts:
-        path: /tmp/app-published
+          path: /tmp/app-published
   
 workflows:
   build-and-publish:
