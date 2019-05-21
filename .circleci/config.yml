@@ -131,7 +131,7 @@ jobs:
           path: /tmp/app-archived
       - run:
           name: Deploy to GitHub Releases
-          command: ghr -prerelease -draft -u S64 -r anrepack -c ${CIRCLE_SHA1} -n $(/tmp/app-published/linux-musl-selfcontained/Anrepack.Cli version) $(/tmp/app-published/linux-musl-selfcontained/Anrepack.Cli version) ./*
+          command: VERSION=$(/tmp/app-published/linux-musl-selfcontained/Anrepack.Cli version) ghr -prerelease -draft -u S64 -r anrepack -c ${CIRCLE_SHA1} -n $VERSION $VERSION ./*
           working_directory: /tmp/app-archived
           environment:
             - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: true
