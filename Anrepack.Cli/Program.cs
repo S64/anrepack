@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reflection;
 using McMaster.Extensions.CommandLineUtils;
+using Sentry;
+using System.Linq;
+using System.IO;
 
 namespace Anrepack.Cli
 {
@@ -15,6 +18,8 @@ namespace Anrepack.Cli
     )]
     public class Program
     {
+
+        private const string SentryDsnResourceName = "Anrepack.Cli.Resources.SentryDsn.txt";
 
         private static AssemblyInformationalVersionAttribute InfoAttr
         {
@@ -33,6 +38,22 @@ namespace Anrepack.Cli
 
         static void Main(string[] args)
         {
+            string sentryDsn = LoadSentryDsn();
+            if (sentryDsn != null)
+            {
+                using (SentrySdk.Init(sentryDsn))
+                {
+                    StartApp(args);
+                }
+            }
+            else
+            {
+                StartApp(args);
+            }
+        }
+
+        private static void StartApp(string[] args)
+        {
             try
             {
                 CommandLineApplication.Execute<Program>(args);
@@ -48,6 +69,22 @@ namespace Anrepack.Cli
         void OnExecute()
         {
             Console.WriteLine("Usages can show with `--help` option.");
+        }
+
+        private static string LoadSentryDsn()
+        {
+            if (Assembly.GetExecutingAssembly().GetManifestResourceNames().Contains(SentryDsnResourceName))
+            {
+                string read;
+                using (var src = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(SentryDsnResourceName)))
+                {
+                    read = src.ReadToEnd();
+                }
+                return read.Trim();
+            }
+
+            Console.WriteLine("NOTE: Sentry resource not found.");
+            return null;
         }
 
     }
