@@ -63,6 +63,9 @@ jobs:
           name: "List"
           command: ls -la /tmp/app-published
       - run:
+          name: Create output dir
+          command: mkdir -p /tmp/app-archived
+      - run:
           name: Archive for osx
           command: zip /tmp/app-archived/osx.zip -r /tmp/app-published/osx
       - run:
