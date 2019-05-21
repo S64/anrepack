@@ -4,6 +4,9 @@ executors:
   dotnetcore:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+  ghr:
+    docker:
+      image: cibuilds/github:0.12.1
 
 jobs:
   build-for-macos:
