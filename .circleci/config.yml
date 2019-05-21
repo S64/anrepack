@@ -90,6 +90,9 @@ jobs:
   deploy:
     executor: ghr
     steps:
+      - run:
+          name: Install prerequirements
+          command: apk add libgcc libstdc++
       - checkout
       - attach_workspace:
           at: /tmp/app-published
