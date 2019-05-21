@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Anrepack
@@ -36,9 +37,9 @@ namespace Anrepack
                 {
                     dirs = new string[] {
                         AndroidCore.UserAndroidHomePath_WIN,
-                        AndroidCore.SystemAndroidHomePath_WIN32,
-                        AndroidCore.SystemAndroidHomePath_WIN64
-                    };
+                        AndroidCore.SystemAndroidHomePath_WIN32(),
+                        AndroidCore.SystemAndroidHomePath_WIN64()
+                    }.Where(x => x != null).ToArray();
                 }
                 else
                 {
@@ -73,7 +74,7 @@ namespace Anrepack
 
         private static Exception newUnsupported()
         {
-            return new NotImplementedException("Currently, AndroidResolver is only supported to macOS and Windows.");
+            return new ARException("Currently, AndroidResolver is only supported to macOS and Windows.");
         }
 
         public static FileInfo GetDebugKeyStore()
@@ -98,4 +99,12 @@ namespace Anrepack
         }
 
     }
+
+    public class ARException : Exception
+    {
+
+        public ARException(string msg) : base(msg) { }
+
+    }
+
 }

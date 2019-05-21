@@ -4,7 +4,10 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace Anrepack.Cli
 {
+
+    [HelpOption]
     [Subcommand(
+        typeof(AnrepackVersion),
         typeof(Repack),
         typeof(DownloadAndroidSdk),
         typeof(DownloadApktool),
@@ -13,9 +16,14 @@ namespace Anrepack.Cli
     public class Program
     {
 
-        public static Version AppVersion
+        private static AssemblyInformationalVersionAttribute InfoAttr
         {
-            get { return Assembly.GetExecutingAssembly().GetName().Version; }
+            get { return Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>(); }
+        }
+
+        public static string AppVersion
+        {
+            get { return InfoAttr.InformationalVersion; }
         }
 
         public static string AppName
@@ -25,17 +33,21 @@ namespace Anrepack.Cli
 
         static void Main(string[] args)
         {
-            Console.WriteLine($"{AppName} {AppVersion}");
-            CommandLineApplication.Execute<Program>(args);
+            try
+            {
+                CommandLineApplication.Execute<Program>(args);
+            }
+            catch (AnrepackException e)
+            {
+                Console.Error.WriteLine("Error occured:");
+                Console.Error.WriteLine(e.Message);
+                Environment.Exit(1);
+            }
         }
 
         void OnExecute()
         {
-            Console.WriteLine("List of subcommands:");
-            Console.WriteLine($"\t{Repack.SUBCOMMAND_NAME}");
-            Console.WriteLine($"\t{DownloadAndroidSdk.SUBCOMMAND_NAME}");
-            Console.WriteLine($"\t{DownloadApktool.SUBCOMMAND_NAME}");
-            Console.WriteLine($"\t{GenerateDebugKeystore.SUBCOMMAND_NAME}");
+            Console.WriteLine("Usages can show with `--help` option.");
         }
 
     }

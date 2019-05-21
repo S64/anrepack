@@ -23,7 +23,7 @@ namespace Anrepack
         {
             if (TempJarDest.Exists)
             {
-                throw new InvalidOperationException("Apktool is already installed.");
+                throw new ADException("Apktool is already installed.");
             }
 
             if (!TempJarDest.Directory.Exists)
@@ -36,6 +36,13 @@ namespace Anrepack
                 TempJarDest.FullName
             );
         }
+    }
+
+    public class ADException : Exception
+    {
+
+        public ADException(string msg) : base(msg) { }
+
     }
 
 }

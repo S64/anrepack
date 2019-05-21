@@ -4,7 +4,10 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Anrepack.Cli
 {
 
-    [Command(SUBCOMMAND_NAME)]
+    [Command(
+        SUBCOMMAND_NAME,
+        Description = "Download Android SDK to default location."
+    )]
     public class DownloadAndroidSdk : IAnrepackCommand
     {
 
@@ -17,13 +20,27 @@ namespace Anrepack.Cli
             Console.WriteLine($"Output to: {downloader.TempDir.FullName}");
 
             Console.WriteLine("Download android sdk...");
-            downloader.DownloadSdkToolsAsync().Wait();
+            try
+            {
+                downloader.DownloadSdkToolsAsync().Wait();
+            }
+            catch (ASDException e)
+            {
+                throw new AnrepackException(e.Message);
+            }
 
             Console.WriteLine("Unarchive android sdk...");
             downloader.UnarchiveSdkTools();
 
             Console.WriteLine($"Move SDKs to: {downloader.GetDefaultDirectory()}");
-            downloader.MoveUnarchivedSdkToolsToDefaultDir();
+            try
+            {
+                downloader.MoveUnarchivedSdkToolsToDefaultDir();
+            }
+            catch (ASDException e)
+            {
+                throw new AnrepackException(e.Message);
+            }
 
             Console.WriteLine("Android SDK Tools installed. Please execute following command to install adb:");
             Console.WriteLine(); // empty line
