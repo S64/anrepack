@@ -10,6 +10,7 @@
     <PackageReference Include="IronPython" Version="2.7.9" />
     <PackageReference Include="IronPython.StdLib" Version="2.7.9" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
+    <PackageReference Include="Sentry" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
