@@ -12,36 +12,44 @@ jobs:
       - checkout
       - run:
           name: Build osx executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published
-      - store_artifacts:
-          path: /tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/osx
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - osx/
   build-for-macos-selfcontained:
     executor: dotnetcore
     steps:
       - checkout
       - run:
           name: Build osx executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published
-      - store_artifacts:
-          path: /tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/osx-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - osx-selfcontained/
   build-for-windows:
     executor: dotnetcore
     steps:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-SNAPSHOT-${CIRCLE_SHA1} --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published
-      - store_artifacts:
-          path: /tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-SNAPSHOT-${CIRCLE_SHA1} --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - windows/
   build-for-windows-selfcontained:
     executor: dotnetcore
     steps:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published
-      - store_artifacts:
-          path: /tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/windows-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - windows-selfcontained/
 
 workflows:
   build-and-publish:
