@@ -5,7 +5,11 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Anrepack.Cli
 {
 
-    [Command(SUBCOMMAND_NAME)]
+    [HelpOption]
+    [Command(
+        SUBCOMMAND_NAME,
+        Description = "Download Apktool to Anrepack's temporary location."
+    )]
     public class DownloadApktool : IAnrepackCommand
     {
 
@@ -15,7 +19,7 @@ namespace Anrepack.Cli
         {
             var downloader = new ApktoolDownloader();
 
-            Console.WriteLine($"Download apktool to `{ApktoolDownloader.TempJarDest.FullName}`...");
+            Console.WriteLine($"Download Apktool to `{ApktoolDownloader.TempJarDest.FullName}`...");
             downloader.Exec().Wait();
 
             Console.WriteLine("Apktool downloaded.");

@@ -8,7 +8,12 @@ using McMaster.Extensions.CommandLineUtils;
 namespace Anrepack.Cli
 {
 
-    [Command(SUBCOMMAND_NAME, ThrowOnUnexpectedArgument = false)]
+    [HelpOption]
+    [Command(
+        SUBCOMMAND_NAME,
+        ThrowOnUnexpectedArgument = false,
+        Description = "Execute repackage operation."
+    )]
     public class Repack : IAnrepackCommand
     {
 
