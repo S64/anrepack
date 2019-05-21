@@ -60,9 +60,6 @@ jobs:
       - attach_workspace:
           at: /tmp/app-published
       - run:
-          name: "List"
-          command: ls -la /tmp/app-published
-      - run:
           name: Create output dir
           command: mkdir -p /tmp/app-archived
       - run:
