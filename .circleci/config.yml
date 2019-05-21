@@ -60,8 +60,22 @@ jobs:
       - attach_workspace:
           at: /tmp/app-published
       - run:
+          name: Archive for macos
+          command: zip /tmp/app-archived/macOS.zip /tmp/app-published/macos/*
+      - run:
+          name: Archive for macos-selfcontained
+          command: zip /tmp/app-archived/macOS-selfcontained.zip /tmp/app-published/macos-selfcontained/*
+      - run:
+          name: Archive for windows
+          command: zip /tmp/app-archived/windows.zip /tmp/app-published/windows/*
+      - run:
+          name: Archive for windows-selfcontained
+          command: zip /tmp/app-archived/windows-selfcontained.zip /tmp/app-published/windows-selfcontained/*
+      - run:
           name: "List"
-          command: ls -la /tmp/app-published
+          command: ls -la /tmp/app-archived
+      - store_artifacts:
+          path: /tmp/app-archived
 
 workflows:
   build-and-publish:
