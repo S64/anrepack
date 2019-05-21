@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run:
           name: Build osx executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --self-contained=false --output=/tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
   build-for-macos-selfcontained:
@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run:
           name: Build osx executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --self-contained=true --output=/tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
   build-for-windows:
@@ -30,7 +30,7 @@ jobs:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --self-contained=false --output=/tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-SNAPSHOT-${CIRCLE_SHA1} --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
   build-for-windows-selfcontained:
@@ -39,7 +39,7 @@ jobs:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --self-contained=true --output=/tmp/app-published
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
 
