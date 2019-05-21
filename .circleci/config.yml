@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run:
           name: Build osx executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/osx
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/osx
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
@@ -26,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: Build osx executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=osx-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/osx-selfcontained
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/osx-selfcontained
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
@@ -37,7 +37,7 @@ jobs:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
@@ -48,7 +48,7 @@ jobs:
       - checkout
       - run:
           name: Build windows executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=windows-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/windows-selfcontained
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/windows-selfcontained
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
@@ -59,7 +59,7 @@ jobs:
       - checkout
       - run:
           name: Build linux executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=linux-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/linux
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/linux
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
@@ -70,7 +70,7 @@ jobs:
       - checkout
       - run:
           name: Build linux executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=linux-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-selfcontained
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-selfcontained
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
@@ -81,7 +81,7 @@ jobs:
       - checkout
       - run:
           name: Build linux-musl executable
-          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-musl-x64 --version-suffix=linux-musl-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-musl-selfcontained
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-musl-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-musl-selfcontained
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
