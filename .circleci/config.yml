@@ -53,6 +53,40 @@ jobs:
           root: /tmp/app-published
           paths:
             - windows-selfcontained/
+  build-for-linux:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build linux executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=linux-SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/linux
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - linux/
+  build-for-linux-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build linux executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=linux-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - linux-selfcontained/
+  build-for-linux-musl-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build linux-musl executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-musl-x64 --version-suffix=linux-musl-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-musl-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - linux-musl-selfcontained/
+
   deploy:
     executor: ghr
     steps:
@@ -78,6 +112,18 @@ jobs:
           name: Archive for windows-selfcontained
           command: zip /tmp/app-archived/windows-selfcontained.zip -r ./*
           working_directory: /tmp/app-published/windows-selfcontained
+      - run:
+          name: Archive for linux
+          command: zip /tmp/app-archived/linux.zip -r ./*
+          working_directory: /tmp/app-published/linux
+      - run:
+          name: Archive for linux-selfcontained
+          command: zip /tmp/app-archived/linux-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/linux-selfcontained
+      - run:
+          name: Archive for linux-musl-selfcontained
+          command: zip /tmp/app-archived/linux-musl-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/linux-musl-selfcontained
       - store_artifacts:
           path: /tmp/app-archived
       - run:
@@ -92,9 +138,15 @@ workflows:
       - build-for-windows
       - build-for-macos-selfcontained
       - build-for-windows-selfcontained
+      - build-for-linux
+      - build-for-linux-selfcontained
+      - build-for-linux-musl-selfcontained
       - deploy:
           requires:
             - build-for-macos
             - build-for-windows
             - build-for-macos-selfcontained
             - build-for-windows-selfcontained
+            - build-for-linux
+            - build-for-linux-selfcontained
+            - build-for-linux-musl-selfcontained
