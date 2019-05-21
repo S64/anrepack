@@ -12,7 +12,8 @@ namespace Anrepack.Cli
     [Command(
         SUBCOMMAND_NAME,
         ThrowOnUnexpectedArgument = false,
-        Description = "Execute repackage operation."
+        Description = "Execute repackage operation.",
+        ExtendedHelpText = "*If not-defined argument present, Passes as Python script's argument."
     )]
     public class Repack : IAnrepackCommand
     {
@@ -33,37 +34,77 @@ namespace Anrepack.Cli
         private const string KEYSTORE_ALIAS_ARG = "--keystore-alias";
         private const string PYTHON_SCRIPT_ARG = "--script";
 
-        [Option(JAVA_HOME_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            JAVA_HOME_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Optional. Set custom `JAVA_HOME` location."
+        )]
         string JavaHomePathArg { get; }
 
-        [Option(ANDROID_HOME_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            ANDROID_HOME_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Optional. Set custom `ANDROID_HOME` location."
+        )]
         string AndroidHomePathArg { get; }
 
-        [Option(APKTOOL_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            APKTOOL_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Optional. Set custom `apktool.jar` location."
+        )]
         string ApktoolJarPathArg { get; }
 
-        [Option(KEYSTORE_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            KEYSTORE_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Optional. Set signing keystore location. Default is `debug.keystore`."
+        )]
         string KeyStorePathArg { get; }
 
-        [Option(TMPDIR_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            TMPDIR_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Optional. Set temporary directory path."
+        )]
         string TmpPathArg { get; }
 
-        [Required]
-        [Option(TARGET_APK_ARG, CommandOptionType.SingleValue)]
+        [Required(AllowEmptyStrings = false)]
+        [Option(
+            TARGET_APK_ARG,
+            CommandOptionType.SingleValue,
+            Description = "Path of target apk to decode."
+        )]
         string TargetApkArg { get; }
 
-        [Option(KEYSTORE_PASSWORD_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            KEYSTORE_PASSWORD_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Signing keystore password."
+        )]
         string KeyStorePassword { get; set; }
 
-        [Option(KEYSTORE_ALIAS_ARG, CommandOptionType.SingleOrNoValue)]
+        [Option(
+            KEYSTORE_ALIAS_ARG,
+            CommandOptionType.SingleOrNoValue,
+            Description = "Signing keystore alias."
+        )]
         string KeyStoreAlias { get; set; }
 
-        [Required]
-        [Option(PYTHON_SCRIPT_ARG, CommandOptionType.SingleValue)]
+        [Required(AllowEmptyStrings = false)]
+        [Option(
+            PYTHON_SCRIPT_ARG,
+            CommandOptionType.SingleValue,
+            Description = "Path of operation script."
+        )]
         string PythonScriptArg { get; }
 
-        [Required]
-        [Option(OUTPUT_ARG, CommandOptionType.SingleValue)]
+        [Required(AllowEmptyStrings = false)]
+        [Option(
+            OUTPUT_ARG,
+            CommandOptionType.SingleValue,
+            Description = "Path of output apk."
+        )]
         string OutputPathArg { get; }
 
         IReadOnlyList<string> RemainingArguments { get; }
