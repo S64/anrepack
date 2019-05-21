@@ -27,10 +27,17 @@ namespace Anrepack
 
         public Task DownloadSdkToolsAsync()
         {
-            return web.DownloadFileTaskAsync(
-                AndroidResolver.GetSdkArchiveUri(),
-                GetArchivePath()
-            );
+            try
+            {
+                return web.DownloadFileTaskAsync(
+                    AndroidResolver.GetSdkArchiveUri(),
+                    GetArchivePath()
+                );
+            }
+            catch (ARException e)
+            {
+                throw new ASDException(e.Message);
+            }
         }
 
         public void UnarchiveSdkTools()
@@ -46,7 +53,7 @@ namespace Anrepack
             var dest = GetDefaultDirectory();
             if (dest.Exists)
             {
-                throw new InvalidOperationException("Android SDK is already installed.");
+                throw new ASDException("Android SDK is already installed.");
             }
             dest.Create();
 
@@ -70,7 +77,14 @@ namespace Anrepack
 
         public DirectoryInfo GetDefaultDirectory()
         {
-            return AndroidResolver.GetDefaultAndroidHome();
+            try
+            {
+                return AndroidResolver.GetDefaultAndroidHome();
+            }
+            catch (ARException e)
+            {
+                throw new ASDException(e.Message);
+            }
         }
 
         public FileInfo GetSdkManagerExecutable()
@@ -87,6 +101,13 @@ namespace Anrepack
         {
             return $"{TempDir.FullName}{DSC}{UnarchiveDestDirName}";
         }
+
+    }
+
+    public class ASDException : Exception
+    {
+
+        public ASDException(string msg) : base(msg) { }
 
     }
 

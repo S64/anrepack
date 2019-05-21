@@ -26,7 +26,16 @@ namespace Anrepack.Cli
         static void Main(string[] args)
         {
             Console.WriteLine($"{AppName} {AppVersion}");
-            CommandLineApplication.Execute<Program>(args);
+            try
+            {
+                CommandLineApplication.Execute<Program>(args);
+            }
+            catch (AnrepackException e)
+            {
+                Console.Error.WriteLine("Error occured:");
+                Console.Error.WriteLine(e.Message);
+                Environment.Exit(1);
+            }
         }
 
         void OnExecute()

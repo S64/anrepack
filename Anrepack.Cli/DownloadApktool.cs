@@ -16,7 +16,14 @@ namespace Anrepack.Cli
             var downloader = new ApktoolDownloader();
 
             Console.WriteLine($"Download apktool to `{ApktoolDownloader.TempJarDest.FullName}`...");
-            downloader.Exec().Wait();
+            try
+            {
+                downloader.Exec().Wait();
+            }
+            catch (ADException e)
+            {
+                throw new AnrepackException(e.Message);
+            }
 
             Console.WriteLine("Apktool downloaded.");
         }

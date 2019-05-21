@@ -17,7 +17,7 @@ namespace Anrepack.Cli
                 var javaDir = JavaResolver.ResolveJavaDir();
                 if (javaDir == null)
                 {
-                    throw new InvalidOperationException("`java` executable not found.");
+                    throw new AnrepackException("`java` executable not found.");
                 }
                 return javaDir;
             }
@@ -26,7 +26,7 @@ namespace Anrepack.Cli
                 var javaDir = new DirectoryInfo(javaHomeArg);
                 if (!javaDir.Exists)
                 {
-                    throw new ArgumentException($"Passed {Repack.JAVA_HOME_ARG} is invalid.");
+                    throw new AnrepackException($"Passed {Repack.JAVA_HOME_ARG} is invalid.");
                 }
                 return javaDir;
             }
@@ -36,10 +36,18 @@ namespace Anrepack.Cli
         {
             if (androidHomeArg == null)
             {
-                var dir = AndroidResolver.ResolveAndroidDir();
+                DirectoryInfo dir;
+                try
+                {
+                    dir = AndroidResolver.ResolveAndroidDir();
+                }
+                catch (ARException e)
+                {
+                    throw new AnrepackException(e.Message);
+                }
                 if (dir == null)
                 {
-                    throw new InvalidOperationException("`adb` executable not found.");
+                    throw new AnrepackException("`adb` executable not found.");
                 }
                 return dir;
             }
@@ -48,7 +56,7 @@ namespace Anrepack.Cli
                 var dir = new DirectoryInfo(androidHomeArg);
                 if (!dir.Exists)
                 {
-                    throw new ArgumentException($"Passed {Repack.ANDROID_HOME_ARG} is invalid.");
+                    throw new AnrepackException($"Passed {Repack.ANDROID_HOME_ARG} is invalid.");
                 }
                 return dir;
             }
@@ -68,7 +76,7 @@ namespace Anrepack.Cli
                     var file = Which.Find("apktool.jar");
                     if (file == null)
                     {
-                        throw new InvalidOperationException($"`apktool.jar` executable not found.");
+                        throw new AnrepackException($"`apktool.jar` executable not found.");
                     }
                     return file;
                 }
@@ -78,7 +86,7 @@ namespace Anrepack.Cli
                 var file = new FileInfo(apktoolJarPathArg);
                 if (!file.Exists)
                 {
-                    throw new ArgumentException($"Passed {Repack.APKTOOL_ARG} is invalid.");
+                    throw new AnrepackException($"Passed {Repack.APKTOOL_ARG} is invalid.");
                 }
                 return file;
             }
@@ -91,7 +99,7 @@ namespace Anrepack.Cli
                 var file = AndroidResolver.GetDebugKeyStore();
                 if (!file.Exists)
                 {
-                    throw new InvalidOperationException($"`debug.keystore` not found.");
+                    throw new AnrepackException($"`debug.keystore` not found.");
                 }
                 return file;
             }
@@ -100,7 +108,7 @@ namespace Anrepack.Cli
                 var file = new FileInfo(keyStorePathArg);
                 if (!file.Exists)
                 {
-                    throw new ArgumentException($"Passed {Repack.KEYSTORE_ARG} is invalid.");
+                    throw new AnrepackException($"Passed {Repack.KEYSTORE_ARG} is invalid.");
                 }
                 return file;
             }

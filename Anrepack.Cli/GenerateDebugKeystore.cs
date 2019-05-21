@@ -15,11 +15,18 @@ namespace Anrepack.Cli
             DirectoryInfo javaHome;
             if ((javaHome = PathResolver.GetJavaHome()) == null)
             {
-                throw new InvalidOperationException("JDK not installed.");
+                throw new AnrepackException("JDK not installed.");
             }
 
             var generator = new AndroidDebugKeystoreGenerator(javaHome);
-            generator.Execute();
+            try
+            {
+                generator.Execute();
+            }
+            catch (KSGException e)
+            {
+                throw new AnrepackException(e.Message);
+            }
         }
 
     }

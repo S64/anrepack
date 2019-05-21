@@ -21,7 +21,7 @@ namespace Anrepack
             var keystore = AndroidResolver.GetDebugKeyStore();
             if (keystore.Exists)
             {
-                throw new InvalidOperationException("debug.keystore already exists.");
+                throw new KSGException("debug.keystore already exists.");
             }
 
             (new ShellConnector(
@@ -29,6 +29,13 @@ namespace Anrepack
                $"-genkey -v -keystore {keystore.FullName} -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname \"C=US, O=Android, CN=Android Debug\""
             )).Execute();
         }
+
+    }
+
+    public class KSGException : Exception
+    {
+
+        public KSGException(string msg) : base(msg) { }
 
     }
 
