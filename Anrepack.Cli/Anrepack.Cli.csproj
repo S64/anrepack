@@ -21,4 +21,13 @@
     <ProjectReference Include="..\Anrepack.ApktoolDownloader\Anrepack.ApktoolDownloader.csproj" />
     <ProjectReference Include="..\Anrepack.AndroidDebugKeystoreGenerator\Anrepack.AndroidDebugKeystoreGenerator.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Resources\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\*" />
+  </ItemGroup>
 </Project>
