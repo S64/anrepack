@@ -1,0 +1,164 @@
+version: 2.1
+
+executors:
+  dotnetcore:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+  ghr:
+    docker:
+      - image: cibuilds/github:0.12.1
+
+jobs:
+  build-for-macos:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build osx executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/osx
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - osx/
+  build-for-macos-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build osx executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/osx-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - osx-selfcontained/
+  build-for-windows:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build windows executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/windows
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - windows/
+  build-for-windows-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build windows executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/windows-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - windows-selfcontained/
+  build-for-linux:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build linux executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=false --output=/tmp/app-published/linux
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - linux/
+  build-for-linux-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build linux executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - linux-selfcontained/
+  build-for-linux-musl-selfcontained:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - run:
+          name: Build linux-musl executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-musl-x64 --version-suffix=SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-musl-selfcontained
+      - persist_to_workspace:
+          root: /tmp/app-published
+          paths:
+            - linux-musl-selfcontained/
+
+  deploy:
+    executor: ghr
+    steps:
+      - run:
+          name: Install prerequirements
+          command: apk add libgcc libstdc++ libintl
+      - checkout
+      - attach_workspace:
+          at: /tmp/app-published
+      - run:
+          name: Create output dir
+          command: mkdir -p /tmp/app-archived
+      - run:
+          name: Archive for osx
+          command: zip /tmp/app-archived/osx.zip -r ./*
+          working_directory: /tmp/app-published/osx
+      - run:
+          name: Archive for osx-selfcontained
+          command: zip /tmp/app-archived/osx-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/osx-selfcontained
+      - run:
+          name: Archive for windows
+          command: zip /tmp/app-archived/windows.zip -r ./*
+          working_directory: /tmp/app-published/windows
+      - run:
+          name: Archive for windows-selfcontained
+          command: zip /tmp/app-archived/windows-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/windows-selfcontained
+      - run:
+          name: Archive for linux
+          command: zip /tmp/app-archived/linux.zip -r ./*
+          working_directory: /tmp/app-published/linux
+      - run:
+          name: Archive for linux-selfcontained
+          command: zip /tmp/app-archived/linux-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/linux-selfcontained
+      - run:
+          name: Archive for linux-musl-selfcontained
+          command: zip /tmp/app-archived/linux-musl-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/linux-musl-selfcontained
+      - store_artifacts:
+          path: /tmp/app-archived
+      - run:
+          name: Deploy to GitHub Releases
+          command: |
+            VERSION=$(/tmp/app-published/linux-musl-selfcontained/Anrepack.Cli version -q)
+            echo "Version is: ${VERSION}"
+            ghr -prerelease -draft -replace -u S64 -r anrepack -c ${CIRCLE_SHA1} -n ${VERSION} ${VERSION} .
+          working_directory: /tmp/app-archived
+          environment:
+            - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: true
+
+workflows:
+  build-and-publish:
+    jobs:
+      - build-for-macos
+      - build-for-windows
+      - build-for-macos-selfcontained
+      - build-for-windows-selfcontained
+      - build-for-linux
+      - build-for-linux-selfcontained
+      - build-for-linux-musl-selfcontained
+      - deploy:
+          requires:
+            - build-for-macos
+            - build-for-windows
+            - build-for-macos-selfcontained
+            - build-for-windows-selfcontained
+            - build-for-linux
+            - build-for-linux-selfcontained
+            - build-for-linux-musl-selfcontained
+          filters:
+            branches:
+              only:
+                - master
