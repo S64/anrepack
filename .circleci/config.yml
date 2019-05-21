@@ -56,9 +56,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: /tmp/app-published
-    - run:
-        name: "List"
-        command: ls -la /tmp/app-published
+      - run:
+          name: "List"
+          command: ls -la /tmp/app-published
 
 workflows:
   build-and-publish:
