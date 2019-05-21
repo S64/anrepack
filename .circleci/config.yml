@@ -10,17 +10,21 @@ jobs:
     executor: dotnetcore
     steps:
       - checkout
-      - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --output=/tmp/app-published
+      - run:
+          name: Build osx executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=osx-x64 --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
   build-for-windows:
     executor: dotnetcore
     steps:
       - checkout
-      - run: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --output=/tmp/app-published
+      - run:
+          name: Build windows executable
+          command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=win-x64 --output=/tmp/app-published
       - store_artifacts:
           path: /tmp/app-published
-  
+
 workflows:
   build-and-publish:
     jobs:
