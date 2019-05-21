@@ -132,7 +132,7 @@ jobs:
       - run:
           name: Deploy to GitHub Releases
           command: |
-            VERSION=$(/tmp/app-published/linux-musl-selfcontained/Anrepack.Cli version -q)
+            VERSION=$(/tmp/app-published/linux-musl-selfcontained/anrepack version -q)
             echo "Version is: ${VERSION}"
             ghr -prerelease -draft -replace -u S64 -r anrepack -c ${CIRCLE_SHA1} -n ${VERSION} ${VERSION} .
           working_directory: /tmp/app-archived
