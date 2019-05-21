@@ -67,16 +67,20 @@ jobs:
           command: mkdir -p /tmp/app-archived
       - run:
           name: Archive for osx
-          command: zip /tmp/app-archived/osx.zip -r /tmp/app-published/osx
+          command: zip /tmp/app-archived/osx.zip -r ./*
+          working_directory: /tmp/app-published/osx
       - run:
           name: Archive for osx-selfcontained
-          command: zip /tmp/app-archived/osx-selfcontained.zip -r /tmp/app-published/osx-selfcontained
+          command: zip /tmp/app-archived/osx-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/osx-selfcontained
       - run:
           name: Archive for windows
-          command: zip /tmp/app-archived/windows.zip -r /tmp/app-published/windows
+          command: zip /tmp/app-archived/windows.zip -r ./*
+          working_directory: /tmp/app-published/windows
       - run:
           name: Archive for windows-selfcontained
-          command: zip /tmp/app-archived/windows-selfcontained.zip -r /tmp/app-published/windows-selfcontained
+          command: zip /tmp/app-archived/windows-selfcontained.zip -r ./*
+          working_directory: /tmp/app-published/windows-selfcontained
       - store_artifacts:
           path: /tmp/app-archived
 
