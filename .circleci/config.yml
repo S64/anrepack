@@ -61,16 +61,16 @@ jobs:
           at: /tmp/app-published
       - run:
           name: Archive for osx
-          command: zip /tmp/app-archived/osx.zip /tmp/app-published/osx/*
+          command: zip /tmp/app-archived/osx.zip -R /tmp/app-published/osx/*
       - run:
           name: Archive for osx-selfcontained
-          command: zip /tmp/app-archived/osx-selfcontained.zip /tmp/app-published/osx-selfcontained/*
+          command: zip /tmp/app-archived/osx-selfcontained.zip -R /tmp/app-published/osx-selfcontained/*
       - run:
           name: Archive for windows
-          command: zip /tmp/app-archived/windows.zip /tmp/app-published/windows/*
+          command: zip /tmp/app-archived/windows.zip -R /tmp/app-published/windows/*
       - run:
           name: Archive for windows-selfcontained
-          command: zip /tmp/app-archived/windows-selfcontained.zip /tmp/app-published/windows-selfcontained/*
+          command: zip /tmp/app-archived/windows-selfcontained.zip -R /tmp/app-published/windows-selfcontained/*
       - run:
           name: "List"
           command: ls -la /tmp/app-archived
