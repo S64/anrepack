@@ -146,14 +146,14 @@ namespace Anrepack.Cli
                 TargetApk = new FileInfo(TargetApkArg);
                 if (!TargetApk.Exists)
                 {
-                    throw new FileNotFoundException($"{TargetApkArg} ({TARGET_APK_ARG}) is not found.");
+                    throw new AnrepackException($"{TargetApkArg} ({TARGET_APK_ARG}) is not found.");
                 }
             }
             {
                 OutputApk = new FileInfo(OutputPathArg);
                 if (OutputApk.Exists)
                 {
-                    throw new InvalidOperationException($"{OUTPUT_ARG} ({OutputPathArg}) already exists.");
+                    throw new AnrepackException($"{OUTPUT_ARG} ({OutputPathArg}) already exists.");
                 }
                 if (!OutputApk.Extension.ToLower().Equals(".apk"))
                 {
@@ -164,7 +164,7 @@ namespace Anrepack.Cli
                 PythonScript = new FileInfo(PythonScriptArg);
                 if (!PythonScript.Exists)
                 {
-                    throw new FileNotFoundException($"{PythonScriptArg} ({PYTHON_SCRIPT_ARG}) is not found.");
+                    throw new AnrepackException($"{PythonScriptArg} ({PYTHON_SCRIPT_ARG}) is not found.");
                 }
             }
             {
@@ -232,7 +232,7 @@ namespace Anrepack.Cli
                 var parent = new DirectoryInfo(TmpPathArg);
                 if (!parent.Exists)
                 {
-                    throw new ArgumentException($"Passed {TMPDIR_ARG} is invalid.");
+                    throw new AnrepackException($"Passed {TMPDIR_ARG} is invalid.");
                 }
                 TempWorkDir = new DirectoryInfo($"{parent.FullName}{DSC}{id}");
             }
@@ -263,7 +263,7 @@ namespace Anrepack.Cli
             /*
             if (dir.Exists)
             {
-                throw new InvalidOperationException("Apktool output dir already exists.");
+                throw new AnrepackException("Apktool output dir already exists.");
             }
             */
             return dir;
@@ -277,7 +277,7 @@ namespace Anrepack.Cli
             /*
             if (file.Exists)
             {
-                throw new InvalidOperationException("Built apk already exists.");
+                throw new AnrepackException("Built apk already exists.");
             }
             */
             return file;

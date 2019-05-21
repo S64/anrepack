@@ -74,7 +74,7 @@ namespace Anrepack
 
         private static Exception newUnsupported()
         {
-            return new NotImplementedException("Currently, AndroidResolver is only supported to macOS and Windows.");
+            return new ARException("Currently, AndroidResolver is only supported to macOS and Windows.");
         }
 
         public static FileInfo GetDebugKeyStore()
@@ -99,4 +99,12 @@ namespace Anrepack
         }
 
     }
+
+    public class ARException : Exception
+    {
+
+        public ARException(string msg) : base(msg) { }
+
+    }
+
 }
