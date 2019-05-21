@@ -82,8 +82,6 @@ jobs:
       - run:
           name: Build linux-musl executable
           command: dotnet publish ./Anrepack.Cli --configuration=Release --runtime=linux-musl-x64 --version-suffix=linux-musl-selfcontained-SNAPSHOT-${CIRCLE_SHA1} --self-contained=true --output=/tmp/app-published/linux-musl-selfcontained
-          environment:
-            - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: true
       - persist_to_workspace:
           root: /tmp/app-published
           paths:
