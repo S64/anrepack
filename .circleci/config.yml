@@ -54,7 +54,7 @@ jobs:
           paths:
             - windows-selfcontained/
   deploy:
-    executor: dotnetcore
+    executor: ghr
     steps:
       - checkout
       - attach_workspace:
