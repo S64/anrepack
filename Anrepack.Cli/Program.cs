@@ -7,6 +7,7 @@ namespace Anrepack.Cli
 
     [HelpOption]
     [Subcommand(
+        typeof(AnrepackVersion),
         typeof(Repack),
         typeof(DownloadAndroidSdk),
         typeof(DownloadApktool),
@@ -27,7 +28,6 @@ namespace Anrepack.Cli
 
         static void Main(string[] args)
         {
-            Console.WriteLine($"{AppName} {AppVersion}");
             try
             {
                 CommandLineApplication.Execute<Program>(args);
