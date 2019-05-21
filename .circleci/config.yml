@@ -50,6 +50,15 @@ jobs:
           root: /tmp/app-published
           paths:
             - windows-selfcontained/
+  deploy:
+    executor: dotnetcore
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/app-published
+    - run:
+        name: "List"
+        command: ls -la /tmp/app-published
 
 workflows:
   build-and-publish:
@@ -58,3 +67,9 @@ workflows:
       - build-for-windows
       - build-for-macos-selfcontained
       - build-for-windows-selfcontained
+      - deploy:
+          requires:
+            - build-for-macos
+            - build-for-windows
+            - build-for-macos-selfcontained
+            - build-for-windows-selfcontained
