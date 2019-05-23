@@ -222,7 +222,7 @@ namespace Anrepack.Cli
 
         private void InitTempWorkDir()
         {
-            var id = Guid.NewGuid();
+            var id = $"anrepack-workdir-{Guid.NewGuid()}";
             if (TmpPathArg == null)
             {
                 TempWorkDir = new DirectoryInfo($"{Path.GetTempPath()}{DSC}{id}");
