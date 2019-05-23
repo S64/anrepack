@@ -109,7 +109,7 @@ namespace Anrepack.Cli
 
         [Option(
             "--noclear",
-            CommandOptionType.SingleValue,
+            CommandOptionType.NoValue,
             Description = "Disable to temporary directories clear after execution."
         )]
         bool NoClear { get; }
