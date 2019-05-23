@@ -107,6 +107,13 @@ namespace Anrepack.Cli
         )]
         string OutputPathArg { get; }
 
+        [Option(
+            "--noclear",
+            CommandOptionType.SingleValue,
+            Description = "Disable to temporary directories clear after execution."
+        )]
+        bool NoClear { get; }
+
         IReadOnlyList<string> RemainingArguments { get; }
 
         private DirectoryInfo JavaHome { get; set; }
@@ -167,56 +174,70 @@ namespace Anrepack.Cli
                     throw new AnrepackException($"{PythonScriptArg} ({PYTHON_SCRIPT_ARG}) is not found.");
                 }
             }
+            try
             {
-                Console.WriteLine("Decode apk using apktool...");
-
-                (new ShellConnector(
-                    GetJre(),
-                    $"-jar \"{Apktool}\" d {TargetApk.FullName} --output=\"{GetDecodedDir().FullName}\""
-                )).Execute();
-
-                Console.WriteLine("Decoded.");
-            }
-            {
-                Console.WriteLine("Run script...");
-                new PythonScriptRunner(
-                    PythonScript,
-                    GetDecodedDir(),
-                    RemainingArguments.ToArray()
-                ).Execute();
-                Console.WriteLine("Done.");
-            }
-            {
-                Console.WriteLine("Re-Build apk using apktool...");
-
-                (new ShellConnector(
-                    GetJre(),
-                    $"-jar \"{Apktool}\" b \"{GetDecodedDir().FullName}\" --output={GetRebuiltApk().FullName}"
-                )).Execute();
-
-                Console.WriteLine("Built.");
-            }
-            {
-                Console.WriteLine("Signing...");
-
-                var jarsignerArgs = $"-verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore \"{KeyStore.FullName}\" -storepass \"{KeyStorePassword}\" -signedjar \"{TempWorkDir.FullName}{DSC}signed.apk\" \"{GetRebuiltApk().FullName}\" \"{KeyStoreAlias}\"";
-                (new ShellConnector(
-                    GetJarSigner(),
-                    jarsignerArgs
-                )).Execute();
-
-                Console.WriteLine("Signed.");
-            }
-            {
-                if (!OutputApk.Directory.Exists)
                 {
-                    OutputApk.Directory.Create();
+                    Console.WriteLine("Decode apk using apktool...");
+
+                    (new ShellConnector(
+                        GetJre(),
+                        $"-jar \"{Apktool}\" d {TargetApk.FullName} --output=\"{GetDecodedDir().FullName}\""
+                    )).Execute();
+
+                    Console.WriteLine("Decoded.");
                 }
-                File.Move(
-                    GetRebuiltApk().FullName,
-                    OutputApk.FullName
-                );
-                Console.WriteLine("Completed!");
+                {
+                    Console.WriteLine("Run script...");
+                    new PythonScriptRunner(
+                        PythonScript,
+                        GetDecodedDir(),
+                        RemainingArguments.ToArray()
+                    ).Execute();
+                    Console.WriteLine("Done.");
+                }
+                {
+                    Console.WriteLine("Re-Build apk using apktool...");
+
+                    (new ShellConnector(
+                        GetJre(),
+                        $"-jar \"{Apktool}\" b \"{GetDecodedDir().FullName}\" --output={GetRebuiltApk().FullName}"
+                    )).Execute();
+
+                    Console.WriteLine("Built.");
+                }
+                {
+                    Console.WriteLine("Signing...");
+
+                    var jarsignerArgs = $"-verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore \"{KeyStore.FullName}\" -storepass \"{KeyStorePassword}\" -signedjar \"{TempWorkDir.FullName}{DSC}signed.apk\" \"{GetRebuiltApk().FullName}\" \"{KeyStoreAlias}\"";
+                    (new ShellConnector(
+                        GetJarSigner(),
+                        jarsignerArgs
+                    )).Execute();
+
+                    Console.WriteLine("Signed.");
+                }
+                {
+                    if (!OutputApk.Directory.Exists)
+                    {
+                        OutputApk.Directory.Create();
+                    }
+                    File.Move(
+                        GetRebuiltApk().FullName,
+                        OutputApk.FullName
+                    );
+                    Console.WriteLine("Completed!");
+                }
+            }
+            finally
+            {
+                if (!NoClear)
+                {
+                    TempWorkDir.Delete(recursive: true);
+                }
+                else
+                {
+                    Console.WriteLine($"NOTE: '{TempWorkDir.FullName}' is saved.");
+                }
             }
         }
 
